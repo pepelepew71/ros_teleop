@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+from __future__ import print_function
+
 import rospy
 from geometry_msgs.msg import Twist
 import sys, select, termios, tty
@@ -23,24 +25,22 @@ CTRL-C to quit
 """
 
 moveBindings = {
-        'i':(1,0),
-        'o':(1,-1),
-        'j':(0,1),
-        'l':(0,-1),
-        'u':(1,1),
-        ',':(-1,0),
-        '.':(-1,1),
-        'm':(-1,-1),
-           }
+    'i':(1,0),
+    'o':(1,-1),
+    'j':(0,1),
+    'l':(0,-1),
+    'u':(1,1),
+    ',':(-1,0),
+    '.':(-1,1),
+    'm':(-1,-1)}
 
 speedBindings={
-        'q':(1.1,1.1),
-        'z':(.9,.9),
-        'w':(1.1,1),
-        'x':(.9,1),
-        'e':(1,1.1),
-        'c':(1,.9),
-          }
+    'q':(1.1,1.1),
+    'z':(.9,.9),
+    'w':(1.1,1),
+    'x':(.9,1),
+    'e':(1,1.1),
+    'c':(1,.9)}
 
 def getKey():
     tty.setraw(sys.stdin.fileno())
@@ -60,43 +60,39 @@ if __name__=="__main__":
 
     settings = termios.tcgetattr(sys.stdin)
 
-    rospy.init_node('teleop_key')
-    pub = rospy.Publisher('/cmd_vel', Twist, queue_size=5)
+    rospy.init_node(name='teleop_key', anonymous=True)
+    topic = rospy.get_param(param_name="~topic")
+    pub = rospy.Publisher(name=topic, data_class=Twist, queue_size=5)
 
-    speed = .2
-    turn = 1
+    speed = rospy.get_param(param_name="~vel_x_val")
+    turn = rospy.get_param(param_name="~rot_z_val")
+
     x = 0
     th = 0
-    status = 0
     count = 0
-    acc = 0.1
+
     target_speed = 0
     target_turn = 0
     control_speed = 0
     control_turn = 0
 
+    print(msg)
+    print(vels(speed,turn))
+
     try:
-        print msg
-        print vels(speed,turn)
-        while(1):
+        while True:
             key = getKey()
-            # -- key: direction (1: clockwise, 2: ccw)
-            if key in moveBindings.keys():
+
+            if key in moveBindings.keys():  # -- key: direction
                 x = moveBindings[key][0]
                 th = moveBindings[key][1]
                 count = 0
-            # -- key: speed
-            elif key in speedBindings.keys():
+            elif key in speedBindings.keys():  # -- key: speed
                 speed = speed * speedBindings[key][0]  # -- linear speed incresed 0.1x
                 turn = turn * speedBindings[key][1]    # -- angular speed incresed 0.1x
                 count = 0
-
-                print vels(speed,turn)
-                if (status == 14):
-                    print msg
-                status = (status + 1) % 15
-            # -- key: stop
-            elif key == ' ' or key == 'k' :
+                print(vels(speed,turn))
+            elif key == ' ' or key == 'k':  # -- key: stop
                 x = 0
                 th = 0
                 control_speed = 0
@@ -106,7 +102,7 @@ if __name__=="__main__":
                 if count > 4:
                     x = 0
                     th = 0
-                if (key == '\x03'):
+                if key == '\x03':
                     break
 
             # -- current speed = speed * direction
@@ -115,36 +111,30 @@ if __name__=="__main__":
 
             # -- speed limit
             if target_speed > control_speed:
-                control_speed = min( target_speed, control_speed + 0.02 )
+                control_speed = min(target_speed, control_speed + 0.02)
             elif target_speed < control_speed:
-                control_speed = max( target_speed, control_speed - 0.02 )
+                control_speed = max(target_speed, control_speed - 0.02)
             else:
                 control_speed = target_speed
 
             if target_turn > control_turn:
-                control_turn = min( target_turn, control_turn + 0.1 )
+                control_turn = min(target_turn, control_turn + 0.1)
             elif target_turn < control_turn:
-                control_turn = max( target_turn, control_turn - 0.1 )
+                control_turn = max(target_turn, control_turn - 0.1)
             else:
                 control_turn = target_turn
 
             # -- publush to /cmd_vel
             twist = Twist()
-            twist.linear.x = control_speed;
-            twist.linear.y = 0;
-            twist.linear.z = 0
-            twist.angular.x = 0;
-            twist.angular.y = 0;
+            twist.linear.x = control_speed
             twist.angular.z = control_turn
             pub.publish(twist)
 
-    except:
-        print e
+    except Exception as e:
+        print(e)
 
     finally:
         twist = Twist()
-        twist.linear.x = 0; twist.linear.y = 0; twist.linear.z = 0
-        twist.angular.x = 0; twist.angular.y = 0; twist.angular.z = 0
-        pub.publish(twist)
+        pub.publish(twist)  # all zero
 
     termios.tcsetattr(sys.stdin, termios.TCSADRAIN, settings)
