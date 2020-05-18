@@ -64,8 +64,8 @@ if __name__=="__main__":
     topic = rospy.get_param(param_name="~topic")
     pub = rospy.Publisher(name=topic, data_class=Twist, queue_size=5)
 
-    speed = rospy.get_param(param_name="~vel_x_val")
-    turn = rospy.get_param(param_name="~rot_z_val")
+    speed = rospy.get_param(param_name="~vel_x")
+    turn = rospy.get_param(param_name="~rot_z")
 
     x = 0
     th = 0

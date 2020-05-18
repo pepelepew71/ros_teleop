@@ -2,11 +2,11 @@
 
 <launch>
 
-  <node name="joy" pkg="joy" type="joy_node">
+  <node pkg="joy" type="joy_node" name="joy">
     <param name="autorepeat_rate" value="2.0"/>
   </node>
 
-  <node name="teleop_joy" pkg="ros_teleop" type="teleop_joy.py">
+  <node pkg="ros_teleop" type="teleop_joy.py" name="teleop_joy">
     <rosparam file="$(find ros_teleop)/config/joy.yaml" command="load"/>
   </node>
 
