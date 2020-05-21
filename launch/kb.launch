@@ -1,9 +1,0 @@
-<?xml version="1.0"?>
-
-<launch>
-
-  <node pkg="ros_teleop" type="teleop_kb.py" name="teleop_kb" output="screen">
-    <rosparam file="$(find ros_teleop)/config/kb.yaml" command="load"/>
-  </node>
-
-</launch>

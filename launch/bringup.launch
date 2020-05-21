@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+
+<launch>
+
+  <include file="$(find ros_teleop)/launch/joy.launch" />
+  <include file="$(find ros_teleop)/launch/key.launch" />
+  <include file="$(find ros_teleop)/launch/twist_mux.launch" />
+
+</launch>
