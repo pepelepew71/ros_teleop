@@ -14,8 +14,3 @@ locks:
   topic   : stop_all
   timeout : 0.0
   priority: 200
--
-  name    : stop_key
-  topic   : stop_key
-  timeout : 0.0
-  priority: 95

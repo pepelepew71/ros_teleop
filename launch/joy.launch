@@ -2,17 +2,17 @@
 
 <launch>
 
-  <node pkg="joy" type="joy_node" name="joy">
-    <param name="autorepeat_rate" value="2.0" />
-    <param name="deadzone" value="0.05" />
-  </node>
+    <node pkg="joy" type="joy_node" name="joy">
+        <param name="autorepeat_rate" value="2.0" />
+        <param name="deadzone" value="0.05" />
+    </node>
 
-  <node pkg="ros_teleop" type="teleop_joy.py" name="teleop_joy">
-    <remap from="cmd_vel" to="/joy_vel" />
-    <rosparam>
-      vx_max: 0.2
-      wz_max: 0.1
-    </rosparam>
-  </node>
+    <node pkg="ros_teleop" type="teleop_joy.py" name="teleop_joy" output="screen">
+        <remap from="cmd_vel" to="/joy_vel" />
+        <rosparam>
+            vx_max: 0.5
+            wz_max: 0.4
+        </rosparam>
+    </node>
 
 </launch>

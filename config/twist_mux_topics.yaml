@@ -7,6 +7,16 @@
 
 topics:
 -
+  name    : web_ui
+  topic   : ui_vel
+  timeout : 0.5
+  priority: 110
+-
+  name    : move_base
+  topic   : nav_vel
+  timeout : 0.5
+  priority: 90
+-
   name    : joystick
   topic   : joy_vel
   timeout : 0.5
@@ -15,4 +25,4 @@ topics:
   name    : keyboard
   topic   : key_vel
   timeout : 0.5
-  priority: 90
+  priority: 1
