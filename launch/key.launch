@@ -5,8 +5,8 @@
     <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_key" output="screen">
         <remap from="cmd_vel" to="/key_vel" />
         <rosparam>
-            speed: 0.5
-            turn: 0.4
+            vx_max: 0.6
+            wz_max: 1.0
         </rosparam>
     </node>
 

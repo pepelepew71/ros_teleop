@@ -10,8 +10,8 @@
     <node pkg="ros_teleop" type="teleop_joy.py" name="teleop_joy" output="screen">
         <remap from="cmd_vel" to="/joy_vel" />
         <rosparam>
-            vx_max: 0.5
-            wz_max: 0.4
+            vx_max: 0.6
+            wz_max: 1.0
         </rosparam>
     </node>
 
