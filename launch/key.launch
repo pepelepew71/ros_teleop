@@ -4,10 +4,9 @@
 
     <node pkg="teleop_twist_keyboard" type="teleop_twist_keyboard.py" name="teleop_key" output="screen">
         <remap from="cmd_vel" to="/key_vel" />
-        <rosparam>
-            vx_max: 0.6
-            wz_max: 1.0
-        </rosparam>
+        <param name="speed" value="0.5" />
+        <param name="turn" value="1.0" />
+        <param name="repeat_rate" value="0.0" />
     </node>
 
 </launch>

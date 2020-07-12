@@ -1,9 +1,9 @@
 #!/usr/bin/env python
 
 """
-Node converts joy inputs.
+Convert ros-kinetic-joy inputs.
 Caution:
-    The parameter deadzone of joy should not equal to zero.
+    The parameter deadzone of ros-kinetic-joy should not equal to zero.
     Make sure the release state of joy can publish the zero command.
 """
 
